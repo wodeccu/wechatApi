@@ -1,9 +1,5 @@
 <?php
-define ( 'TOKEN', 'weixin' );
-$echostr = $_GET ['echostr'];
 
-	$wx = new WeixinApi();
-	$wx->valid();
 
 class WeixinApi {
 	public function valid() {
