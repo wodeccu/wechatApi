@@ -4,7 +4,7 @@
 class WeixinApi {
 	public function valid() {
 		if ($this->checksignature ()) {
-			echo $echostr;
+			echo $_GET ['echostr'];
 		} else {
 			echo 'error';
 		}
