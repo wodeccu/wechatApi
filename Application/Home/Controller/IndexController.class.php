@@ -49,23 +49,89 @@ class IndexController extends Controller {
 					}
 				break;
 			case 'text':
-					$url  = "http://www.tuling123.com/openapi/api";
-					$data = json_encode(array('key'=>'ce469e196b9d46f0bda1391afe181aab', 'info'=>$postObj->Content,'userid'=>$postObj->FromUserName));
-					$result = $this->http_post_data($url, $data);
-					$result = json_decode($result[1]);
-					$template = "<xml>
-								<ToUserName><![CDATA[%s]]></ToUserName>
-								<FromUserName><![CDATA[%s]]></FromUserName>
-								<CreateTime>%s</CreateTime>
-								<MsgType><![CDATA[%s]]></MsgType>
-								<Content><![CDATA[%s]]></Content>
-								</xml>";
-					$toUser = $postObj->FromUserName;
-					$fromUser = $postObj->ToUserName;
-					$time =time();
-					$msgType = 'text';
-					$content = $postObj->Content;
-					echo $info = sprintf($template,$toUser,$fromUser,$time,$msgType,$result->text);
+					switch ($postObj->Content) {
+						case '金响是谁':
+							$content ='金响是你大爷';
+							$result = $this->http_post_data($url, $data);
+							$result = json_decode($result[1]);
+							$template = "<xml>
+										<ToUserName><![CDATA[%s]]></ToUserName>
+										<FromUserName><![CDATA[%s]]></FromUserName>
+										<CreateTime>%s</CreateTime>
+										<MsgType><![CDATA[%s]]></MsgType>
+										<Content><![CDATA[%s]]></Content>
+										</xml>";
+							$toUser = $postObj->FromUserName;
+							$fromUser = $postObj->ToUserName;
+							$time =time();
+							$msgType = 'text';
+							
+							echo $info = sprintf($template,$toUser,$fromUser,$time,$msgType,$content);
+							break;
+						case '1':
+							 $toUser = $postObj->FromUserName;
+							 $fromUser = $postObj->ToUserName;
+							 $time =time();
+							 $msgType = 'news';
+							 $arr = array(
+							 		array(
+							 			'title'=>'ccc',
+							 			'description'=>'ccc',
+							 			'picUrl'=>'http://182.254.137.49/weixin/timg.jpg',
+							 			'url'=>'http://www.baidu.com',
+							 			),
+							 		array(
+							 			'title'=>'taobao',
+							 			'description'=>'ccc',
+							 			'picUrl'=>'http://182.254.137.49/weixin/timg.jpg',
+							 			'url'=>'http://www.baidu.com',
+							 			),
+							 	);
+							$template ='<xml>
+										<ToUserName><![CDATA[%s]]></ToUserName>
+										<FromUserName><![CDATA[%s]]></FromUserName>
+										<CreateTime>%s</CreateTime>
+										<MsgType><![CDATA[%s]]></MsgType>
+										<ArticleCount>'.count($arr).'</ArticleCount>
+										<Articles>';
+							foreach ($arr as $k => $v) {
+								$template.=	'<item>
+										<Title><![CDATA['.$v["title"].']]></Title> 
+										<Description><![CDATA['.$v["description"].']]></Description>
+										<PicUrl><![CDATA['.$v["picUrl"].']]></PicUrl>
+										<Url><![CDATA['.$v["url"].']]></Url>
+										</item>';
+							}
+							
+										
+							$template.=	'</Articles>
+										</xml> ';
+							 echo $info = sprintf($template,$toUser,$fromUser,$time,$msgType);
+							break;
+						default:
+							$url  = "http://www.tuling123.com/openapi/api";
+							$data = json_encode(array('key'=>'ce469e196b9d46f0bda1391afe181aab', 'info'=>$postObj->Content,'userid'=>$postObj->FromUserName));
+							
+							$result = $this->http_post_data($url, $data);
+							$result = json_decode($result[1]);
+							$content = $result->text;
+							$template = "<xml>
+										<ToUserName><![CDATA[%s]]></ToUserName>
+										<FromUserName><![CDATA[%s]]></FromUserName>
+										<CreateTime>%s</CreateTime>
+										<MsgType><![CDATA[%s]]></MsgType>
+										<Content><![CDATA[%s]]></Content>
+										</xml>";
+							$toUser = $postObj->FromUserName;
+							$fromUser = $postObj->ToUserName;
+							$time =time();
+							$msgType = 'text';
+							
+							echo $info = sprintf($template,$toUser,$fromUser,$time,$msgType,$content);
+							break;
+					}
+					
+					
 				break;
 			default:
 				# code...
